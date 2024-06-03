@@ -1,0 +1,103 @@
+//SimpleCalculator.java --> File name
+
+import javax.swing.*;
+import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+
+public class SimpleCalculator extends JFrame implements ActionListener {
+    // Declare all components
+    private JTextField num1Field, num2Field, resultField;
+    private JButton addButton, subtractButton, multiplyButton, divideButton, resetButton;
+
+    // Constructor to set up the GUI
+    public SimpleCalculator() {
+        // Create a frame
+        JFrame frame = new JFrame("Simple Calculator");
+        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        frame.setSize(400, 300);
+        frame.setLayout(new GridLayout(6, 2)); // Changed to 6 rows to accommodate the reset button
+
+        // Create text fields
+        num1Field = new JTextField();
+        num2Field = new JTextField();
+        resultField = new JTextField();
+        resultField.setEditable(false);
+
+        // Create labels
+        JLabel num1Label = new JLabel("Number 1:");
+        JLabel num2Label = new JLabel("Number 2:");
+        JLabel resultLabel = new JLabel("Result:");
+
+        // Create buttons
+        addButton = new JButton("Add");
+        subtractButton = new JButton("Subtract");
+        multiplyButton = new JButton("Multiply");
+        divideButton = new JButton("Divide");
+        resetButton = new JButton("Reset");
+
+        // Add action listeners
+        addButton.addActionListener(this);
+        subtractButton.addActionListener(this);
+        multiplyButton.addActionListener(this);
+        divideButton.addActionListener(this);
+        resetButton.addActionListener(this);
+
+        // Add components to the frame
+        frame.add(num1Label);
+        frame.add(num1Field);
+        frame.add(num2Label);
+        frame.add(num2Field);
+        frame.add(addButton);
+        frame.add(subtractButton);
+        frame.add(multiplyButton);
+        frame.add(divideButton);
+        frame.add(resultLabel);
+        frame.add(resultField);
+        frame.add(resetButton); // Adding the reset button to the frame
+
+        // Set frame visibility
+        frame.setVisible(true);
+    }
+
+    // Action performed method to handle button clicks
+    @Override
+    public void actionPerformed(ActionEvent e) {
+        try {
+            if (e.getSource() == resetButton) {
+                // Clear all text fields
+                num1Field.setText("");
+                num2Field.setText("");
+                resultField.setText("");
+            } else {
+                double num1 = Double.parseDouble(num1Field.getText());
+                double num2 = Double.parseDouble(num2Field.getText());
+                double result = 0;
+
+                if (e.getSource() == addButton) {
+                    result = num1 + num2;
+                } else if (e.getSource() == subtractButton) {
+                    result = num1 - num2;
+                } else if (e.getSource() == multiplyButton) {
+                    result = num1 * num2;
+                } else if (e.getSource() == divideButton) {
+                    if (num2 != 0) {
+                        result = num1 / num2;
+                    } else {
+                        resultField.setText("Error: Division by zero");
+                        return;
+                    }
+                }
+                resultField.setText(String.valueOf(result));
+            }
+        } catch (NumberFormatException ex) {
+            resultField.setText("Error: Invalid input");
+        }
+    }
+
+    public static void main(String[] args) {
+        // Create the calculator
+        new SimpleCalculator();
+    }
+}
+
